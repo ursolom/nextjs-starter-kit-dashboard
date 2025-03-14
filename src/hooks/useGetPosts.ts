@@ -23,7 +23,7 @@ const fetchPosts = async (): Promise<PostsResponse> => {
 }
 
 export default function useGetPosts() {
-    const query = useQuery<PostsResponse>({ queryKey: ["posts"], queryFn: fetchPosts, staleTime: 1000 * 60 * 5 }); // cache time 5 minutes
+    const query = useQuery<PostsResponse>({ queryKey: ["posts"], queryFn: fetchPosts, staleTime: 1000 * 60 * 5 }); 
     return {
         query
     }
