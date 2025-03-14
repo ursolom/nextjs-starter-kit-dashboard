@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const posts = [
     {
@@ -121,12 +121,20 @@ const posts = [
         "topRate": false
     }
 ]
-export async function GET() {
+export async function GET(request: NextRequest) {
+    const searchParams = request.nextUrl.searchParams;
+    const status = searchParams.get("status");
     try {
-        return NextResponse.json(
-            { message: "Successfully fetched data", posts }
-        );
-
+        if (status === "all" || !status) {
+            return NextResponse.json(
+                { message: "Successfully fetched data", posts }
+            );
+        } else {
+            const filteredPosts = posts.filter((post) => post.status === status);
+            return NextResponse.json(
+                { message: "Successfully fetched data", posts: filteredPosts }
+            );
+        }
     } catch (error) {
         return NextResponse.json("error")
     }

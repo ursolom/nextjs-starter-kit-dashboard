@@ -5,17 +5,17 @@ import { Post, PostStatusType } from "@/types";
 import { useState } from "react";
 
 export default function Home() {
-  const { query } = useGetPosts();
-  const { data, isLoading, isError } = query;
   const classNameTh = "border border-gray-300 p-2"
   const [status, setStatus] = useState<PostStatusType>("all");
+  const { query } = useGetPosts(status);
+  const { data, isLoading, isError } = query;
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error</div>
   return (
     <div className="p-4">
       <select name="status" onChange={(e) => setStatus(e.target.value as PostStatusType)} value={status} id="status" className="w-full mb-4 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option value="all">All</option>
-        <option value="publish">Publish</option>
+        <option value="published">Published</option>
         <option value="draft">Draft</option>
         <option value="block">Block</option>
       </select>
