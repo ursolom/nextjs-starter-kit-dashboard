@@ -2,20 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query"
 import axios from "@/lib/axios";
+import { Post, PostsResponse } from "@/types";
 
-export interface Post {
-    id: number;
-    userId: number;
-    title: string;
-    body: string;
-    status: string;
-    topRate: boolean;
-}
-
-interface PostsResponse {
-    message: string;
-    posts: Post[];
-}
 
 const fetchPosts = async (): Promise<PostsResponse> => {
     const res = await axios.get("/posts");
@@ -23,7 +11,7 @@ const fetchPosts = async (): Promise<PostsResponse> => {
 }
 
 export default function useGetPosts() {
-    const query = useQuery<PostsResponse>({ queryKey: ["posts"], queryFn: fetchPosts, staleTime: 1000 * 60 * 5 }); 
+    const query = useQuery<PostsResponse>({ queryKey: ["posts"], queryFn: fetchPosts, staleTime: 1000 * 60 * 5 });
     return {
         query
     }
