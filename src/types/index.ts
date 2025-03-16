@@ -12,3 +12,4 @@ export interface PostsResponse {
     posts: Post[];
 }
 export type PostStatusType = "publish" | "draft" | "block" | "all";
+//commit
