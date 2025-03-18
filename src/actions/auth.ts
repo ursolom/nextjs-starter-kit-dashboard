@@ -1,13 +1,14 @@
 "use server";
 
-import { registerSchema } from "@/validation/authValidation";
+import { loginSchema, registerSchema } from "@/validation/authValidation";
 
 
-
+export function formatForm(formData: FormData) {
+    return Object.fromEntries(formData.entries())
+}
 
 export async function registerAction(prevState: unknown, formData: FormData) {
-    const inputs = Object.fromEntries(formData.entries())
-    const validation = registerSchema.safeParse(inputs)
+    const validation = registerSchema.safeParse(formatForm(formData))
     const { data, error, success } = validation;
     if (!success) {
         return {
@@ -18,8 +19,8 @@ export async function registerAction(prevState: unknown, formData: FormData) {
     }
     try {
         return {
-            message:"sucesslly",
-            status:200
+            message: "sucesslly",
+            status: 200
         };
     } catch (error) {
         return {
@@ -29,5 +30,24 @@ export async function registerAction(prevState: unknown, formData: FormData) {
     }
 }
 export async function loginAction(prevState: unknown, formData: FormData) {
-    // 
+    const validation = loginSchema.safeParse(formatForm(formData))
+    const { data, error, success } = validation;
+    if (!success) {
+        return {
+            status: 400,
+            error: error.formErrors.fieldErrors,
+            formData,
+        };
+    }
+    try {
+        return {
+            message: "sucesslly",
+            status: 200
+        };
+    } catch (error) {
+        return {
+            message: `error in server please tray again`,
+            status: 500,
+        }
+    }
 }
