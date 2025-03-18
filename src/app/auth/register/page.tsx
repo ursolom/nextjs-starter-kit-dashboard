@@ -42,7 +42,7 @@ export default function RegisterPage() {
 
                 <Button loading={loading}>Register Now</Button>
 
-                {/* Log in Link */}
+                {/* auth Link */}
                 <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
                     Already have an account?{" "}
                     <Link
