@@ -56,10 +56,10 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                 {label && (
                     <label
                         htmlFor={name}
-                        className={`text-lg font-semibold ${hasError ? "text-red-600" : "text-black dark:text-white"
+                        className={`text-lg font-semibold ${hasError ? "text-red-400" : "text-black dark:text-white"
                             } ${className}`}
                     >
-                        {label} {required && <span className="text-red-500">*</span>}
+                        {label} {required && <span className="text-red-400">*</span>}
                     </label>
                 )}
 
@@ -68,7 +68,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                         <button
                             type="button"
                             className={`absolute left-0 top-1/2 -translate-y-1/2 p-2 
-                                ${hasError ? "text-red-500 hover:text-red-700" : "text-black dark:text-white"} 
+                                ${hasError ? "text-red-500 hover:text-red-600" : "text-black dark:text-white"} 
                                 ${className}`}
                             onClick={() => {
                                 if (typeof ref === "object" && ref?.current) {
@@ -116,7 +116,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                 </div>
 
                 {hasError && (
-                    <p className="text-sm md:text-base text-red-600 font-medium mt-1">{error[name][0]}</p>
+                    <p className="text-sm md:text-base text-red-500 font-medium mt-1">{error[name][0]}</p>
                 )}
             </div>
         );

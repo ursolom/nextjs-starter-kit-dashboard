@@ -8,6 +8,7 @@ import { useActionState } from "react";
 import { RegisterInputs } from "../inputs";
 import Link from "next/link";
 import FormContainer from "../FromContainer";
+import { PAGES } from "@/constants";
 
 const initialState: TState = {
     message: "",
@@ -21,7 +22,7 @@ const headerText = {
     subTitle: "Enter your email and password below to log in"
 };
 
-export default function RegisterPage() {
+export default function LoginPage() {
     const [state, action, loading] = useActionState(registerAction, initialState);
     const { error, formData } = state;
 
@@ -37,6 +38,7 @@ export default function RegisterPage() {
                         type={type}
                         error={error}
                         defaultValue={formData?.get(name) as string}
+                        required
                     />
                 ))}
 
@@ -46,7 +48,7 @@ export default function RegisterPage() {
                 <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
                     Already have an account?{" "}
                     <Link
-                        href="/login"
+                        href={PAGES.PUBLIC.AUTH.LOGIN}
                         className="text-primary font-medium hover:underline"
                     >
                         Log in
