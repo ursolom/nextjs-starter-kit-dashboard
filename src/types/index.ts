@@ -14,3 +14,10 @@ export interface PostsResponse {
 export type PostStatusType = "publish" | "draft" | "block" | "all";
 
 export type ValidationErrors = Record<string, string[]> | undefined;
+
+export type TState = {
+    message?: string;
+    error?: ValidationErrors;
+    status?: number | null;
+    formData?: FormData | null;
+};

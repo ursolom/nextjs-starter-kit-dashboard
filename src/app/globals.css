@@ -3,3 +3,31 @@
 @theme {
     --color-primary: #3490dc;
 }
+
+.auth-page {
+    @apply relative flex items-center justify-center min-h-screen bg-gray-100 dark:bg-neutral-900 overflow-hidden;
+}
+
+.auth-spotlight {
+    @apply absolute inset-0 flex items-center justify-center;
+}
+
+.auth-spotlight div {
+    @apply w-[800px] h-[800px] bg-gradient-to-br from-primary/50 to-primary opacity-20 blur-3xl rounded-full;
+}
+
+.auth-card {
+    @apply w-full max-w-md bg-white dark:bg-neutral-800/40 shadow-xl rounded-lg p-8 relative z-10;
+}
+
+.auth-title {
+    @apply text-3xl font-bold text-center text-gray-900 dark:text-white mb-2;
+}
+
+.auth-subtitle {
+    @apply text-center text-gray-600 dark:text-gray-400 mb-6;
+}
+
+.auth-form {
+    @apply flex flex-col gap-4;
+}
