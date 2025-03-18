@@ -1,53 +1,67 @@
-"use server";
+'use server';
 
 import { loginSchema, registerSchema } from "@/validation/authValidation";
 
-
-export function formatForm(formData: FormData) {
-    return Object.fromEntries(formData.entries())
+function formatFormData(formData: FormData) {
+    return Object.fromEntries(formData.entries());
 }
 
-export async function registerAction(prevState: unknown, formData: FormData) {
-    const validation = registerSchema.safeParse(formatForm(formData))
-    const { data, error, success } = validation;
-    if (!success) {
+export async function registerAction(
+    prevState: unknown,
+    formData: FormData
+) {
+    const validated = registerSchema.safeParse(formatFormData(formData));
+
+    if (!validated.success) {
+        console.log(validated.error.flatten().fieldErrors)
+        console.log("=============================")
+        console.log(error.formErrors.fieldErrors)
         return {
-            status: 400,
-            error: error.formErrors.fieldErrors,
-            formData,
+            status: 'error',
+            fieldErrors: validated.error.flatten().fieldErrors,
+            message: 'البيانات المدخلة غير صالحة',
         };
     }
+
     try {
         return {
-            message: "sucesslly",
-            status: 200
+            status: 'success',
+            message: 'تم التسجيل بنجاح',
         };
     } catch (error) {
+        console.error('Register error:', error);
         return {
-            message: `error in server please tray again`,
-            status: 500,
-        }
-    }
-}
-export async function loginAction(prevState: unknown, formData: FormData) {
-    const validation = loginSchema.safeParse(formatForm(formData))
-    const { data, error, success } = validation;
-    if (!success) {
-        return {
-            status: 400,
-            error: error.formErrors.fieldErrors,
-            formData,
+            status: 'error',
+            message: 'حدث خطأ أثناء التسجيل، يرجى المحاولة مرة أخرى',
         };
     }
+}
+
+export async function loginAction(
+    prevState: unknown,
+    formData: FormData
+) {
+    const validated = loginSchema.safeParse(formatFormData(formData));
+
+    if (!validated.success) {
+        return {
+            status: 'error',
+            fieldErrors: validated.error.flatten().fieldErrors,
+            message: 'بيانات الدخول غير صحيحة',
+        };
+    }
+
     try {
         return {
-            message: "sucesslly",
-            status: 200
+            status: 'success',
+            message: 'تم الدخول بنجاح',
         };
     } catch (error) {
+        console.error('Login error:', error);
         return {
-            message: `error in server please tray again`,
-            status: 500,
-        }
+            status: 'error',
+            message: 'حدث خطأ أثناء الدخول، يرجى المحاولة مرة أخرى',
+        };
     }
 }
+
