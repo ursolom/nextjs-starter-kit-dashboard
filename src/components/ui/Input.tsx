@@ -94,16 +94,18 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                         required={required}
                         onKeyDown={onKeyDown}
                         readOnly={readOnly}
-                        className={`p-2 pl-10 text-xl sm:text-lg rounded-sm border shadow-sm
+                        className={`p-2  text-xl sm:text-lg rounded-sm border shadow-sm
                             focus:outline-none focus:ring-2 
                             disabled:opacity-50 disabled:cursor-not-allowed
-                            bg-white text-black dark:bg-black dark:text-white
-                            placeholder:text-gray-400 dark:placeholder:text-gray-500
+                            bg-white text-black dark:bg-neutral-900/50 dark:text-white
+                            placeholder:text-neutral-400 dark:placeholder:text-neutral-400
                             transition-all duration-200 w-full
                             ${hasError
                                 ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                                : "border-gray-300 dark:border-gray-700 focus:ring-teal-500 focus:border-teal-500"
-                            } ${className}`}
+                                : "border-gray-300 dark:border-neutral-600 focus:ring-neutral-600 focus:border-neutral-600"
+                            } ${className}
+                            ${icon ? "pl-10" : "p-2"}
+                            `}
                         value={value}
                         onFocus={onFocus}
                         onBlur={onBlur}

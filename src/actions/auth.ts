@@ -17,7 +17,10 @@ export async function registerAction(prevState: unknown, formData: FormData) {
         };
     }
     try {
-
+        return {
+            message:"sucesslly",
+            status:200
+        };
     } catch (error) {
         return {
             message: `error in server please tray again`,
