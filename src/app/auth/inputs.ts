@@ -17,6 +17,12 @@ export const RegisterInputs = [
         placeholder: "••••••••",
         type: "password",
     },
+    {
+        label: "Confirm Password",
+        name: "confirmPassword",
+        placeholder: "••••••••",
+        type: "password",
+    },
 ];
 
 export const LoginInputs = [

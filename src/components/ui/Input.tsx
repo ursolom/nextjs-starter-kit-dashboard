@@ -1,7 +1,6 @@
 import { ValidationErrors } from "@/types";
-import { forwardRef } from "react";
-
-
+import { forwardRef, useState } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -50,14 +49,14 @@ export const Input = forwardRef<HTMLInputElement, Props>(
         ref
     ) => {
         const hasError = error && error[name];
+        const [showPassword, setShowPassword] = useState(false);
 
         return (
             <div className={`flex flex-col gap-2 w-full ${className}`} data-toggle-password-group>
                 {label && (
                     <label
                         htmlFor={name}
-                        className={`text-lg font-semibold ${hasError ? "text-red-400" : "text-black dark:text-white"
-                            } ${className}`}
+                        className={`text-lg font-semibold ${hasError ? "text-red-400" : "text-black dark:text-white"} ${className}`}
                     >
                         {label} {required && <span className="text-red-400">*</span>}
                     </label>
@@ -67,8 +66,8 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                     {icon && (
                         <button
                             type="button"
-                            className={`absolute left-0 top-1/2 -translate-y-1/2 p-2 
-                                ${hasError ? "text-red-500 hover:text-red-600" : "text-black dark:text-white"} 
+                            className={`absolute left-2 top-1/2 -translate-y-1/2 p-2
+                                ${hasError ? "text-red-500 hover:text-red-600" : "text-black dark:text-white"}
                                 ${className}`}
                             onClick={() => {
                                 if (typeof ref === "object" && ref?.current) {
@@ -83,7 +82,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                     )}
 
                     <input
-                        type={type}
+                        type={type === "password" && showPassword ? "text" : type}
                         placeholder={placeholder}
                         disabled={disabled}
                         autoFocus={autoFocus}
@@ -94,17 +93,17 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                         required={required}
                         onKeyDown={onKeyDown}
                         readOnly={readOnly}
-                        className={`p-2  text-xl sm:text-lg rounded-sm border shadow-sm
-                            focus:outline-none focus:ring-2 
+                        className={`p-2 text-xl sm:text-lg rounded-sm border shadow-sm
+                            focus:outline-none focus:ring-2
                             disabled:opacity-50 disabled:cursor-not-allowed
                             bg-white text-black dark:bg-neutral-900/50 dark:text-white
                             placeholder:text-neutral-400 dark:placeholder:text-neutral-400
                             transition-all duration-200 w-full
-                            ${hasError
-                                ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                            ${hasError ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                                 : "border-gray-300 dark:border-neutral-600 focus:ring-neutral-600 focus:border-neutral-600"
                             } ${className}
                             ${icon ? "pl-10" : "p-2"}
+                            ${type === "password" ? "pr-10" : ""}
                             `}
                         value={value}
                         onFocus={onFocus}
@@ -113,6 +112,17 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                         dir={dir}
                         {...props}
                     />
+
+                    {type === "password" && (
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="absolute cursor-pointer right-2 top-1/2 -translate-y-1/2 p-2 text-gray-500 dark:text-gray-400"
+                            tabIndex={-1}
+                        >
+                            {showPassword ? <AiOutlineEyeInvisible size={24} /> : <AiOutlineEye size={24} />}
+                        </button>
+                    )}
                 </div>
 
                 {hasError && (
