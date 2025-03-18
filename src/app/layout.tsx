@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { PAGE_TITLES, SITE } from "@/constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next Starter kit",
-  description: "Next Starter kit dashboard",
+  title: PAGE_TITLES.HOME,
+  description: SITE.DESCRIPTION,
 };
 
 export default function RootLayout({
