@@ -1,11 +1,10 @@
 "use server";
 
+import { formatForm } from "@/helpers";
 import { loginSchema, registerSchema } from "@/validation/authValidation";
+import bcrypt from "bcryptjs";
 
 
-function formatForm(formData: FormData) {
-    return Object.fromEntries(formData.entries());
-}
 export async function registerAction(prevState: unknown, formData: FormData) {
     const validation = registerSchema.safeParse(formatForm(formData))
     const { data, error, success } = validation;
@@ -16,11 +15,9 @@ export async function registerAction(prevState: unknown, formData: FormData) {
             formData,
         };
     }
+    const { name, email, password } = data
     try {
-        return {
-            message: "sucesslly",
-            status: 200
-        };
+        // const hashedPassword =  await 
     } catch (error) {
         return {
             message: `error in server please tray again`,
