@@ -1,12 +1,13 @@
 "use client";
 
 import { registerAction } from "@/actions/auth";
+import Button from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { ValidationErrors } from "@/types";
 import { useActionState } from "react";
 
 export type TState = {
-    message?: string | undefined;
+    message?: string;
     error?: ValidationErrors;
     status?: number | null;
     formData?: FormData | null;
@@ -20,14 +21,14 @@ const initialState: TState = {
 };
 
 export default function RegisterPage() {
-    const [state, action] = useActionState(registerAction, initialState);
+    const [state, action, loading] = useActionState(registerAction, initialState);
     const { error, formData } = state;
 
     return (
         <div className="relative flex items-center justify-center min-h-screen bg-gray-100 dark:bg-neutral-900 overflow-hidden">
-            {/* spotlight */}
+            {/* Spotlight */}
             <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[800px] h-[800px] bg-gradient-to-br from-teal-600 to-teal-400 opacity-20 blur-3xl rounded-full"></div>
+                <div className="w-[800px] h-[800px] bg-gradient-to-br from-cyan-600 to-cyan-400 opacity-20 blur-3xl rounded-full"></div>
             </div>
 
             {/* Register Card */}
@@ -65,17 +66,9 @@ export default function RegisterPage() {
                         error={error}
                         defaultValue={formData?.get("password") as string}
                     />
-
-                    {error?.general && (
-                        <p className="text-red-600 text-sm font-medium">{error.general}</p>
-                    )}
-
-                    <button
-                        type="submit"
-                        className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-md transition-all"
-                    >
-                        Register
-                    </button>
+                    <Button loading={loading}>
+                        Register Now
+                    </Button>
                 </form>
             </div>
         </div>
