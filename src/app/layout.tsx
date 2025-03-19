@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          <div className="pt-20 bg-background">
+          <div className="pt-20 bg-background text-text">
             test
             {children}
           </div>

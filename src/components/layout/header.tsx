@@ -5,22 +5,15 @@ import { FiMenu, FiX } from "react-icons/fi";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { PAGES, SITE } from "@/constants";
+import Logo from "../Logo";
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
-    const [isMounted, setIsMounted] = useState(false);
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
 
     const mainLinks = [
         { name: "About", href: "#" },
         { name: "Careers", href: "#" },
         { name: "History", href: "#" },
-        { name: "Services", href: "#" },
-        { name: "Projects", href: "#" },
-        { name: "Blog", href: "#" },
     ];
 
     const authLinks = [
@@ -37,21 +30,13 @@ export default function Header() {
     return (
         <header className="bg-card/50 shadow-lg fixed w-full top-0 left-0 z-50 border-b border-border backdrop-blur-2xl">
             <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6 lg:px-8">
+
                 {/* Logo with Site Name */}
                 <Link
                     href="/"
                     className="flex items-center gap-3 group"
                 >
-                    <svg
-                        className="h-8 w-8 text-emerald-400 transition-transform group-hover:rotate-12"
-                        viewBox="0 0 32 32"
-                        fill="currentColor"
-                    >
-                        <path d="M16 0L0 16l16 16 16-16L16 0zm0 4.8L27.2 16 16 27.2 4.8 16 16 4.8zM8 16l8 8 8-8-8-8-8 8z" />
-                    </svg>
-                    <span className="hidden sm:block text-xl font-bold text-text">
-                        {SITE.NAME}
-                    </span>
+                    <Logo/>
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -61,7 +46,7 @@ export default function Header() {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="text-text hover:text-emerald-400 transition-colors duration-200 text-sm font-medium"
+                                className="text-text hover:text-primary transition-colors duration-200 text-sm font-medium"
                             >
                                 {link.name}
                             </Link>
@@ -74,11 +59,8 @@ export default function Header() {
                                 <Link
                                     key={link.name}
                                     href={link.href}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${link.name === "Login"
-                                        ? "bg-card text-text hover:bg-primary hover:text-white"
-                                        : "bg-primary/50 text-white hover:bg-primary"
-                                        }`}
-                                >
+                                    className="px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 
+                                        hover:bg-card bg-card/50 border border-border text-text/90  hover:text-text">
                                     {link.name}
                                 </Link>
                             ))}
@@ -90,7 +72,7 @@ export default function Header() {
                 <div className="flex md:hidden items-center gap-4">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="p-2 rounded-lg hover:bg-card border-border text-text transition-colors cursor-pointer"
+                        className="p-2 rounded-lg hover:bg-card border border-border text-text transition-colors cursor-pointer"
                     >
                         {isOpen ? (
                             <FiX className="w-6 h-6" />
