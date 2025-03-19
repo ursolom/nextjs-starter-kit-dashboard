@@ -8,9 +8,9 @@ export const SITE = {
         FACEBOOK: "https://facebook.com/ursolom",
         GITHUB: "https://github.com/ursolom",
         LINKEDIN: "https://linkedin.com/in/ursolom",
-        REPO:"https://github.com/ursolom/"
+        REPO: "https://github.com/ursolom/nextjs-starter-kit-dashboard"
     },
-    
+
 };
 
 export const PAGE_TITLES = {
