@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          <div className="py-24 bg-background text-text">
+          <div className="pt-24 relative bg-background text-text">
             {children}
           </div>
         </Providers>
