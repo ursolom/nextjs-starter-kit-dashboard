@@ -1,7 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary: #3490dc;
+    --color-foreground: 15 23 42;
+    --color-muted-foreground: 71 85 105;
+    --color-background: 255 255 255;
+    --color-accent: 241 245 249;
+    --color-primary: 30 41 59;
+    --color-primary-foreground: 248 250 252;
+    --color-accent-foreground: 30 41 59;
 }
 
 .auth-page {
@@ -31,5 +37,3 @@
 .auth-form {
     @apply flex flex-col gap-4;
 }
-
-

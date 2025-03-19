@@ -1,5 +1,6 @@
 export const SITE = {
     NAME: "Starter Kit",
+    LOGO: "/logo.svg",
     DESCRIPTION: "This is an amazing website Starter Kit built with Next.js",
     BASE_URL: "https://starter-kit-nextjs-ursolom.vercel.app",
     SUPPORT_EMAIL: "ursolom.dev@email.com",
