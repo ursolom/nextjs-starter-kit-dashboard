@@ -32,7 +32,10 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          {children}
+          <div className="pt-20 bg-background">
+            test
+            {children}
+          </div>
         </Providers>
       </body>
     </html>

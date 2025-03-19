@@ -3,10 +3,11 @@
 @theme {
     --color-foreground: 15 23 42;
     --color-muted-foreground: 71 85 105;
-    --color-background: 255 255 255;
-    --color-accent: 241 245 249;
-    --color-primary: 30 41 59;
-    --color-primary-foreground: 248 250 252;
+    --color-background: oklch(0.145 0 0);
+    --color-card: oklch(.205 0 0);
+    --color-border: oklch(0.270 0 0);
+    --color-primary: oklch(0.715 0.143 215.221);
+    --color-text: oklch(0.87 0 0);
     --color-accent-foreground: 30 41 59;
 }
 
