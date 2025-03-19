@@ -6,9 +6,11 @@ export const SITE = {
     SUPPORT_EMAIL: "ursolom.dev@email.com",
     SOCIALS: {
         FACEBOOK: "https://facebook.com/ursolom",
-        TWITTER: "https://twitter.com/ursolom",
-        INSTAGRAM: "https://instagram.com/ursolom",
+        GITHUB: "https://github.com/ursolom",
+        LINKEDIN: "https://linkedin.com/in/ursolom",
+        REPO:"https://github.com/ursolom/"
     },
+    
 };
 
 export const PAGE_TITLES = {

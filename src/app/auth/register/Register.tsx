@@ -7,7 +7,7 @@ import { TState } from "@/types";
 import { useActionState } from "react";
 import { RegisterInputs } from "../inputs";
 import Link from "next/link";
-import FormContainer from "../FromContainer";
+import FormContainer from "../FormContainer";
 import { PAGES } from "@/constants";
 
 const initialState: TState = {
