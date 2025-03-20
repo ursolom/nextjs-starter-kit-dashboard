@@ -2,6 +2,7 @@
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { SITE, PAGES } from "@/constants";
 import { FaGithub, FaLinkedin, FaFacebook, FaArrowRight } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Home() {
   const mouseX = useMotionValue(0);
@@ -13,7 +14,6 @@ export default function Home() {
     transparent 90%
   )`;
 
-  const blobPath = "M415,275Q422,310,417.5,354Q413,398,378,423Q343,448,299,423Q255,398,227.5,389.5Q200,381,151,401.5Q102,422,86,383.5Q70,345,65,309.5Q60,274,78.5,243.5Q97,213,87.5,176.5Q78,140,107.5,122Q137,104,160.5,74Q184,44,222,33Q260,22,293.5,43.5Q327,65,362,81Q397,97,386,142.5Q375,188,391.5,214Q408,240,415,275Z";
   return (
     <div className="min-h-screen">
       {/* Spotlight Effect */}
@@ -25,27 +25,35 @@ export default function Home() {
       <div className="container mx-auto px-4 py-20 text-center relative z-10">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div
-            className="p-3 rounded-xl hover:border-border hover:bg-card bg-card/80 border/80 border border-border/80 flex items-center justify-center transition-colors"
-          >
-            <motion.svg className="size-16 text-primary" viewBox="0 0 32 32"
-              xmlns="http://www.w3.org/2000/svg">
+          <span className="absolute size-full bg-primary -z-10 blur-3xl  opacity-5 top-24 " />
+          <div className="p-6 rounded-xl border  relative overflow-hidden border-border/50 bg-card/50 flex items-center justify-center">
+            <motion.svg
+              className="size-24 text-primary"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <motion.path
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
+                d="M16 0L0 16l16 16 16-16L16 0zm0 4.8L27.2 16 16 27.2 4.8 16 16 4.8zM8 16l8 8 8-8-8-8-8 8z"
+                stroke="currentColor"
+                strokeWidth={1}
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray="100"
+                strokeDashoffset="100"
+                animate={{
+                  strokeDashoffset: [100, 0, 0, 100, 100],
+                }}
                 transition={{
-                  duration: 2,
+                  duration: 5,
+                  times: [0, 0.2, 0.7, 0.9, 1],
                   ease: "easeInOut",
                   repeat: Infinity,
-                  repeatType: "loop",
-                  repeatDelay: 1
+                  repeatDelay: 0.1,
                 }}
-                strokeWidth={4}
-                strokeDasharray="0 1"
-                d="M16 0L0 16l16 16 16-16L16 0zm0 4.8L27.2 16 16 27.2 4.8 16 16 4.8zM8 16l8 8 8-8-8-8-8 8z"
-                fill="currentColor"
               />
             </motion.svg>
+
           </div>
         </div>
 
@@ -70,13 +78,13 @@ export default function Home() {
 
         {/* Buttons */}
         <div className="flex justify-center gap-4 mb-16">
-          <motion.a
+          <Link
             href={PAGES.PUBLIC.AUTH.LOGIN}
-            className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-2 px-6 py-3 border border-primary/90 bg-primary/50 text-primary-foreground rounded-lg hover:bg-primary/80 transition-colors"
           >
             <span>Get Started</span>
             <FaArrowRight className="text-lg" />
-          </motion.a>
+          </Link>
 
           <motion.a
             href={SITE.REPO}
