@@ -1,3 +1,5 @@
+import { type JWTPayload } from "jose";
+
 export interface Post {
     id: number;
     userId: number;
@@ -21,3 +23,22 @@ export type TState = {
     status?: number | null;
     formData?: FormData | null;
 };
+
+
+export type SessionPayload = {
+    userId: string;
+    expires: Date;
+};
+
+export type RefreshTokenPayload = JWTPayload & SessionPayload;
+
+export interface CookieConfig {
+    name: string;
+    options: {
+        httpOnly: boolean;
+        secure: boolean;
+        sameSite: "lax" | "strict" | "none";
+        path: string;
+    };
+    duration: number;
+}
