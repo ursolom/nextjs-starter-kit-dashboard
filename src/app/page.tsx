@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { SITE, PAGES } from "@/constants";
 import { FaGithub, FaLinkedin, FaFacebook, FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
+import { TbBrandNextjs } from "react-icons/tb";
 
 export default function Home() {
 
@@ -22,7 +23,7 @@ export default function Home() {
 
       <div className="container mx-auto px-4 py-20 text-center relative z-10">
         {/* Logo */}
-        <div className="flex justify-center mb-8">
+        <div className="flex relative justify-center mb-8">
           <div className="p-6 rounded-xl border  relative overflow-hidden border-border/50 bg-card/50 flex items-center justify-center">
             <span className="absolute size-full bg-primary -z-10 blur-3xl top-12 " />
             <motion.svg
@@ -51,7 +52,6 @@ export default function Home() {
                 }}
               />
             </motion.svg>
-
           </div>
         </div>
 
