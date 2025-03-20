@@ -1,13 +1,15 @@
 import config from "@/config";
 import { PAGES } from "@/constants";
 import { cookieStore } from "@/helpers";
-import { CookieConfig, RefreshTokenPayload, SessionPayload } from "@/types";
+import { CookieConfig, RefreshTokenPayload, SessionPayload, SessionResponse } from "@/types";
+import { type Role } from "@prisma/client";
 import { SignJWT, jwtVerify } from "jose";
 import { redirect } from "next/navigation";
 
-const loginPage = PAGES.PUBLIC.AUTH.LOGIN;
-
+const loginUserPage = PAGES.PUBLIC.AUTH.LOGIN;
+const loginAdminPage = PAGES.ADMIN.LOGIN;
 const secretKey = new TextEncoder().encode(config.env.secretKey);
+
 export const cookieConfig: CookieConfig = {
     name: "session",
     options: {
@@ -20,60 +22,65 @@ export const cookieConfig: CookieConfig = {
 };
 
 export async function encrypt(payload: SessionPayload): Promise<string> {
-    return new SignJWT(payload)
+    return new SignJWT({ ...payload, exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 })
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
-        .setExpirationTime("1d")
         .sign(secretKey);
 }
 
 export async function decrypt(token: string): Promise<RefreshTokenPayload | null> {
     try {
-        const { payload } = await jwtVerify(token, secretKey, {
-            algorithms: ["HS256"],
-        });
+        const { payload } = await jwtVerify(token, secretKey, { algorithms: ["HS256"] });
+        if (!payload.exp) return null;
         return payload as RefreshTokenPayload;
     } catch (error) {
         return null;
     }
 }
 
-export async function createSession(userId: string): Promise<void> {
+export async function createSession(userId: string, role: Role) {
     const expires = new Date(Date.now() + cookieConfig.duration);
-    const session = await encrypt({ userId, expires });
+    const session = await encrypt({ userId, role, expires });
 
-    cookieStore.set(
-        cookieConfig.name,
-        session,
-        {
-            ...cookieConfig.options,
-            expires
-        }
-    );
+    cookieStore.set(cookieConfig.name, session, { ...cookieConfig.options, expires });
 }
 
-export async function verifySession(): Promise<SessionPayload> {
+export async function verifySession(page: "admin" | "public"): Promise<SessionResponse> {
     const sessionToken = cookieStore.get(cookieConfig.name)?.value;
-
-    if (!sessionToken) redirect(loginPage);
-
+    if (!sessionToken) {
+        return {
+            success: false,
+            status: 401,
+            message: "Unauthorized",
+        };
+    }
     const session = await decrypt(sessionToken);
-    if (!session?.userId) redirect(loginPage);
-
+    if (!session?.userId) {
+        return {
+            success: false,
+            status: 401,
+            message: "Unauthorized",
+        };
+    }
     return {
+        success: true,
         userId: session.userId,
-        expires: new Date(session.expires)
+        role: session.role,
+        expires: new Date(session.expires),
     };
 }
 
-export async function refreshSession(): Promise<void> {
-    const session = await verifySession();
-    if (session.expires.getTime() - Date.now() < 30 * 60 * 1000) {
-        await createSession(session.userId);
-    }
-}
+// export async function refreshSession() {
+//     const session = await verifySession();
+//     if (session.expires.getTime() - Date.now() < 30 * 60 * 1000) {
+//         await createSession(session.userId, session.role);
+//     }
+// }
 
-export async function deleteSession(): Promise<void> {
+export async function deleteSession() {
     cookieStore.delete(cookieConfig.name);
-    redirect(loginPage);
+    return {
+        status: 200,
+        message: "log out successfully"
+    };
 }

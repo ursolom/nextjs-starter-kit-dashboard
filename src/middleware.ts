@@ -1,36 +1,48 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
-import { cookieConfig, decrypt, encrypt } from './lib/session';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { cookieConfig, decrypt } from './lib/session';
+import { PAGES } from './constants';
 
-export async function middleware(request: NextRequest) {
-    let session = request.cookies.get(cookieConfig.name)?.value;
+export async function middleware(req: NextRequest) {
+    const { pathname } = req.nextUrl;
+    const reqHeader = new Headers(req.headers);
 
-    if (!session) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+    reqHeader.set("x-url", req.url);
 
-    const verified = await decrypt(session);
-    if (!verified) {
-        const response = NextResponse.redirect(new URL('/login', request.url));
-        response.cookies.delete(cookieConfig.name);
+    const response = NextResponse.next({
+        request: { headers: reqHeader },
+    });
+
+    const userProtectedPages = ["account"];
+    const adminProtectedPages = ["admin"];
+
+    const isUserPage = userProtectedPages.some((page) => pathname.startsWith(`/${page}`));
+    const isAdminPage = adminProtectedPages.some((page) => pathname.startsWith(`/${page}`));
+
+
+    const sessionToken = req.cookies.get(cookieConfig.name)?.value;
+    const session = sessionToken ? await decrypt(sessionToken) : null;
+
+    if (!session || !session.userId) {
+
+        if (isUserPage) return NextResponse.redirect(new URL(PAGES.PUBLIC.AUTH.LOGIN, req.url));
+
+        if (isAdminPage) return NextResponse.redirect(new URL(PAGES.ADMIN.LOGIN, req.url));
+
         return response;
     }
 
-    if (verified.exp * 1000 - Date.now() < 30 * 60 * 1000) {
-        const newSession = await encrypt({
-            userId: verified.userId,
-            expires: new Date(Date.now() + cookieConfig.duration)
-        });
-
-        const response = NextResponse.next();
-        response.cookies.set({
-            name: cookieConfig.name,
-            value: newSession,
-            ...cookieConfig.options,
-            expires: new Date(Date.now() + cookieConfig.duration)
-        });
-        return response;
+    if (isAdminPage && session.role !== 'ADMIN') {
+        return NextResponse.redirect(new URL('/', req.url));
     }
 
-    return NextResponse.next();
+    if (isUserPage && session.role === 'ADMIN') {
+        return NextResponse.redirect(new URL(PAGES.ADMIN.LOGIN, req.url));
+    }
+
+    return response;
 }
+
+export const config = {
+    matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+};

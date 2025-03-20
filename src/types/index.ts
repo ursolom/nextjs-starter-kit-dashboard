@@ -1,3 +1,4 @@
+import { type Role } from "@prisma/client";
 import { type JWTPayload } from "jose";
 
 export interface Post {
@@ -24,10 +25,23 @@ export type TState = {
     formData?: FormData | null;
 };
 
+export type SessionResponse =
+    | {
+        success: true;
+        userId: string;
+        role: Role;
+        expires: Date;
+    }
+    | {
+        success: false;
+        status: number;
+        message: string;
+    };
 
 export type SessionPayload = {
     userId: string;
     expires: Date;
+    role: Role
 };
 
 export type RefreshTokenPayload = JWTPayload & SessionPayload;
