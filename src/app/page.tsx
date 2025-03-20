@@ -9,7 +9,7 @@ export default function Home() {
 
   const spotlight = `radial-gradient(
     1300px at 0px 0px,
-    rgba(113, 113, 122, 0.15),
+    rgba(113, 113, 122, 0.22),
     transparent 90%
   )`;
 
@@ -17,7 +17,7 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Spotlight Effect */}
       <motion.div
-        className="absolute  top-0 inset-0 pointer-events-none"
+        className="absolute top-0 inset-0 pointer-events-none"
         style={{ background: spotlight }}
       />
 
