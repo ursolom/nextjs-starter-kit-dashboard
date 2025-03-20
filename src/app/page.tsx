@@ -1,15 +1,13 @@
 "use client";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import { SITE, PAGES } from "@/constants";
 import { FaGithub, FaLinkedin, FaFacebook, FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
 
 export default function Home() {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
 
-  const spotlight = useMotionTemplate`radial-gradient(
-    1300px at ${mouseX}px ${mouseY}px,
+  const spotlight = `radial-gradient(
+    1300px at 0px 0px,
     rgba(113, 113, 122, 0.15),
     transparent 90%
   )`;
@@ -25,8 +23,8 @@ export default function Home() {
       <div className="container mx-auto px-4 py-20 text-center relative z-10">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <span className="absolute size-full bg-primary -z-10 blur-3xl  opacity-5 top-24 " />
           <div className="p-6 rounded-xl border  relative overflow-hidden border-border/50 bg-card/50 flex items-center justify-center">
+            <span className="absolute size-full bg-primary -z-10 blur-3xl top-12 " />
             <motion.svg
               className="size-24 text-primary"
               viewBox="0 0 32 32"
