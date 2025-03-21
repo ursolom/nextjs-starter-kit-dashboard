@@ -5,4 +5,4 @@ export function formatForm<T extends Record<string, any>>(formData: FormData): T
 }
 
 
-export const cookieStore = await cookies()
+export const cookieStore = await cookies();

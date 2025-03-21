@@ -1,48 +1,16 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { cookieConfig, decrypt } from './lib/session';
-import { PAGES } from './constants';
+import { NextRequest, NextResponse } from "next/server";
+import { LOGGED_OUT_ROUTES, PUBLIC_ROUTES } from "./constants";
+import { cookieStore } from "./helpers";
+import { cookies } from "next/headers";
 
-export async function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
+    const session = req.cookies.get('session')?.value;
     const { pathname } = req.nextUrl;
-    const reqHeader = new Headers(req.headers);
 
-    reqHeader.set("x-url", req.url);
-
-    const response = NextResponse.next({
-        request: { headers: reqHeader },
-    });
-
-    const userProtectedPages = ["account"];
-    const adminProtectedPages = ["admin"];
-
-    const isUserPage = userProtectedPages.some((page) => pathname.startsWith(`/${page}`));
-    const isAdminPage = adminProtectedPages.some((page) => pathname.startsWith(`/${page}`));
-
-
-    const sessionToken = req.cookies.get(cookieConfig.name)?.value;
-    const session = sessionToken ? await decrypt(sessionToken) : null;
-
-    if (!session || !session.userId) {
-
-        if (isUserPage) return NextResponse.redirect(new URL(PAGES.PUBLIC.AUTH.LOGIN, req.url));
-
-        if (isAdminPage) return NextResponse.redirect(new URL(PAGES.ADMIN.LOGIN, req.url));
-
-        return response;
-    }
-
-    if (isAdminPage && session.role !== 'ADMIN') {
-        return NextResponse.redirect(new URL('/', req.url));
-    }
-
-    if (isUserPage && session.role === 'ADMIN') {
-        return NextResponse.redirect(new URL(PAGES.ADMIN.LOGIN, req.url));
-    }
-
-    return response;
+    const response = NextResponse.next()
+    return response
 }
 
 export const config = {
-    matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
-};
+    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+}

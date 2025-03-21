@@ -1,13 +1,10 @@
 import config from "@/config";
 import { PAGES } from "@/constants";
-import { cookieStore } from "@/helpers";
 import { CookieConfig, RefreshTokenPayload, SessionPayload, SessionResponse } from "@/types";
 import { type Role } from "@prisma/client";
 import { SignJWT, jwtVerify } from "jose";
-import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-const loginUserPage = PAGES.PUBLIC.AUTH.LOGIN;
-const loginAdminPage = PAGES.ADMIN.LOGIN;
 const secretKey = new TextEncoder().encode(config.env.secretKey);
 
 export const cookieConfig: CookieConfig = {
@@ -41,12 +38,11 @@ export async function decrypt(token: string): Promise<RefreshTokenPayload | null
 export async function createSession(userId: string, role: Role) {
     const expires = new Date(Date.now() + cookieConfig.duration);
     const session = await encrypt({ userId, role, expires });
-
-    cookieStore.set(cookieConfig.name, session, { ...cookieConfig.options, expires });
+    (await cookies()).set(cookieConfig.name, session, { ...cookieConfig.options, expires });
 }
 
-export async function verifySession(page: "admin" | "public"): Promise<SessionResponse> {
-    const sessionToken = cookieStore.get(cookieConfig.name)?.value;
+export async function verifySession(): Promise<SessionResponse> {
+    const sessionToken = (await cookies()).get(cookieConfig.name)?.value;
     if (!sessionToken) {
         return {
             success: false,
@@ -78,7 +74,7 @@ export async function verifySession(page: "admin" | "public"): Promise<SessionRe
 // }
 
 export async function deleteSession() {
-    cookieStore.delete(cookieConfig.name);
+    (await cookies()).delete(cookieConfig.name);
     return {
         status: 200,
         message: "log out successfully"
