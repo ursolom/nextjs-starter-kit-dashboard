@@ -8,7 +8,10 @@ const queryClient = new QueryClient()
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <QueryClientProvider client={queryClient}>
-            <Toaster position="top-right" reverseOrder={false} />
+            <Toaster
+                position="top-center"
+                reverseOrder={true}
+            />
             {children}
         </QueryClientProvider>
     )
