@@ -1,28 +1,23 @@
 "use client";
 
 import { getUserInClient } from "@/lib/user";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { type User } from "@prisma/client";
-import { useState, useEffect, useTransition } from "react";
 
 export function useUser() {
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, startTransition] = useTransition();
-    const [message, setMessage] = useState<string | null>(null);
+    const queryClient = useQueryClient();
 
-    useEffect(() => {
-        startTransition(async () => {
-            const userData = await getUserInClient();
-            if (!userData) {
-                setUser(null);
-                setMessage("User not authorized");
-            } else {
-                setUser(userData);
-                setMessage(null);
-            }
-        });
-    }, []);
+    const { data: user, isLoading, error } = useQuery<User | null>({
+        queryKey: ["user"],
+        queryFn: getUserInClient,
+        staleTime: 1000 * 60 * 5,
+    });
+
+    const refreshUser = async () => {
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+    };
 
     const isAdmin = user?.role === "ADMIN";
 
-    return { user, loading, message, isAdmin };
+    return { user, loading: isLoading, message: error ? "User not authorized" : null, isAdmin, refreshUser };
 }
