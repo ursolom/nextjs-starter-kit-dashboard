@@ -4,9 +4,12 @@ import { cookieStore } from "./helpers";
 import { cookies } from "next/headers";
 
 export default async function middleware(req: NextRequest) {
-    const session = req.cookies.get('session')?.value;
-    const { pathname } = req.nextUrl;
 
+    const { pathname } = req.nextUrl;
+    const cookiesStore = await cookies()
+    const session = cookiesStore.get('session')?.value;
+
+    console.log(session)
     const response = NextResponse.next()
     return response
 }
