@@ -56,3 +56,4 @@ export interface CookieConfig {
     };
     duration: number;
 }
+

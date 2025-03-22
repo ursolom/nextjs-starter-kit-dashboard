@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { User } from "@prisma/client";
 import { db } from "./db";
 import { verifySession } from "./session";
 import { cache } from "react";
@@ -15,8 +15,17 @@ export const getUser = cache(
         if (!user) return null;
 
         return {
-            ...user,
-            isAdmin: user.role === Role.ADMIN,
+            id: user.id,
+            name: user.name,
+            role: user.role,
         };
     }
-) 
+);
+
+export const getUserInClient = async () => {
+    "use server";
+    const user = await getUser();
+    if (!user) return null;
+
+    return user as User;
+};
