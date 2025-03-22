@@ -4,6 +4,7 @@ import "./globals.css";
 import { PAGE_TITLES, SITE } from "@/constants";
 import { Providers } from "@/providers";
 import Header from "@/components/layout/header";
+import { getUrl } from "@/helpers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,11 +21,13 @@ export const metadata: Metadata = {
   description: SITE.DESCRIPTION,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { url } = await getUrl();
+  console.log(url)
   return (
     <html lang="en">
       <body

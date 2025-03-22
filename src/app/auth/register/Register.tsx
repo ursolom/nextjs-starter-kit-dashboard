@@ -4,11 +4,12 @@ import { registerAction } from "@/actions/auth";
 import Button from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { TState } from "@/types";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { RegisterInputs } from "../inputs";
 import Link from "next/link";
 import FormContainer from "../FormContainer";
 import { PAGES } from "@/constants";
+import { useRouter } from "next/navigation";
 
 const initialState: TState = {
     message: "",
@@ -23,9 +24,14 @@ const headerText = {
 };
 
 export default function RegisterPage() {
+    const router = useRouter();
     const [state, action, loading] = useActionState(registerAction, initialState);
-    const { error, formData } = state;
-
+    const { error, formData, status } = state;
+    useEffect(() => {
+        if (status === 200) {
+            router.replace(PAGES.USER.ACCOUNT);
+        }
+    }, [])
     return (
         <FormContainer headerText={headerText}>
             <form action={action} className="flex flex-col gap-4">
