@@ -1,3 +1,4 @@
+"use server";
 import { User } from "@prisma/client";
 import { db } from "./db";
 import { verifySession } from "./session";
@@ -23,9 +24,8 @@ export const getUser = cache(
 );
 
 export const getUserInClient = async () => {
-    "use server";
     const user = await getUser();
     if (!user) return null;
-
     return user as User;
 };
+
