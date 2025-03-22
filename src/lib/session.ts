@@ -1,5 +1,5 @@
+import "server-only";
 import config from "@/config";
-import { PAGES } from "@/constants";
 import { CookieConfig, RefreshTokenPayload, SessionPayload, SessionResponse } from "@/types";
 import { type Role } from "@prisma/client";
 import { SignJWT, jwtVerify } from "jose";
@@ -25,9 +25,9 @@ export async function encrypt(payload: SessionPayload): Promise<string> {
         .sign(secretKey);
 }
 
-export async function decrypt(token: string): Promise<RefreshTokenPayload | null> {
+export async function decrypt(session: string): Promise<RefreshTokenPayload | null> {
     try {
-        const { payload } = await jwtVerify(token, secretKey, { algorithms: ["HS256"] });
+        const { payload } = await jwtVerify(session, secretKey, { algorithms: ["HS256"] });
         if (!payload.exp) return null;
         return payload as RefreshTokenPayload;
     } catch (error) {

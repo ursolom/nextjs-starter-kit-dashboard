@@ -2,6 +2,7 @@
 
 import { formatForm } from "@/helpers";
 import { db } from "@/lib/db";
+import { createSession } from "@/lib/session";
 import { handleServerError } from "@/types/handleServerError";
 import { loginSchema, registerSchema } from "@/validation/authValidation";
 import bcrypt from "bcryptjs";
@@ -22,12 +23,12 @@ export async function registerAction(prevState: unknown, formData: FormData) {
     const { name, email, password } = data
     try {
         // check if the email is already registered
-        const user = await db.user.findUnique({
+        const exitsUser = await db.user.findUnique({
             where: {
                 email
             },
         });
-        if (user) {
+        if (exitsUser) {
             return {
                 error: { email: ["This email is already in use"] },
                 status: 409,
@@ -37,18 +38,18 @@ export async function registerAction(prevState: unknown, formData: FormData) {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await db.user.create({
+        const user = await db.user.create({
             data: {
                 name,
                 email,
                 password: hashedPassword,
             },
         });
+        await createSession(user.id, user.role)
         return {
             status: 201,
             message: "User registered successfully",
         };
-
     } catch (error) {
         return handleServerError(error, "Registration failed, please try again");
     }
