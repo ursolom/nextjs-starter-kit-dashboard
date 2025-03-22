@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { PAGE_TITLES, SITE } from "@/constants";
+import { PAGE_TITLES, PAGES, SITE } from "@/constants";
 import { Providers } from "@/providers";
 import Header from "@/components/layout/header";
+import { getUser } from "@/lib/user";
+import { Role } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,11 +22,19 @@ export const metadata: Metadata = {
   description: SITE.DESCRIPTION,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getUser();
+
+  if (!user) {
+    redirect(PAGES.ADMIN.LOGIN);
+  }
+  if (user.role === Role.USER) {
+    redirect(PAGES.USER.ACCOUNT);
+  }
   return (
     <html lang="en">
       <body

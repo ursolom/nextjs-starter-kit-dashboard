@@ -12,7 +12,11 @@ export const SITE = {
     REPO: "https://github.com/ursolom/nextjs-starter-kit-dashboard"
 
 };
-export const LOGGED_OUT_ROUTES = ['/auth/login', '/auth/register'];
+export const LOGGED_OUT_ROUTES = [
+    '/auth/login',
+    '/auth/register',
+    '/login'
+];
 export const PUBLIC_ROUTES = ['/']
 
 export const PAGE_TITLES = {
@@ -31,7 +35,12 @@ export const PAGES = {
             REGISTER: "/auth/register",
         },
     },
+    USER: {
+        ACCOUNT: "/account",
+    },
     ADMIN: {
-        LOGIN: "/admin/login",
+        DASHBOARD: "/admin",
+        LOGIN: "/login",
     },
 };
+

@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import { db } from "./db";
 import { verifySession } from "./session";
 
@@ -13,6 +14,6 @@ export const getUser = async () => {
 
     return {
         ...user,
-        isAdmin: user.role === "ADMIN",
+        isAdmin: user.role === Role.ADMIN,
     };
 };

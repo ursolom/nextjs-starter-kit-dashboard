@@ -38,11 +38,13 @@ export async function decrypt(session: string): Promise<RefreshTokenPayload | nu
 export async function createSession(userId: string, role: Role) {
     const expires = new Date(Date.now() + cookieConfig.duration);
     const session = await encrypt({ userId, role, expires });
-    (await cookies()).set(cookieConfig.name, session, { ...cookieConfig.options, expires });
+    const cookiesStore = await cookies();
+    cookiesStore.set(cookieConfig.name, session, { ...cookieConfig.options, expires });
 }
 
 export async function verifySession(): Promise<SessionResponse> {
-    const sessionToken = (await cookies()).get(cookieConfig.name)?.value;
+    const cookiesStore = await cookies();
+    const sessionToken = cookiesStore.get(cookieConfig.name)?.value;
     if (!sessionToken) {
         return {
             success: false,
@@ -74,7 +76,8 @@ export async function verifySession(): Promise<SessionResponse> {
 // }
 
 export async function deleteSession() {
-    (await cookies()).delete(cookieConfig.name);
+    const cookiesStore = await cookies();
+    cookiesStore.delete(cookieConfig.name);
     return {
         status: 200,
         message: "log out successfully"
