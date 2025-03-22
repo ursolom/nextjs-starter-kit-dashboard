@@ -4,11 +4,13 @@ import { loginAction } from "@/actions/auth";
 import Button from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { TState } from "@/types";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { LoginInputs } from "../inputs";
 import Link from "next/link";
 import FormContainer from "../FormContainer";
 import { PAGES } from "@/constants";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const initialState: TState = {
     message: "",
@@ -24,7 +26,15 @@ const headerText = {
 
 export default function LoginPage() {
     const [state, action, loading] = useActionState(loginAction, initialState);
-    const { error, formData } = state;
+    const router = useRouter();
+    const { error, formData, status, message } = state;
+
+    useEffect(() => {
+        if (status === 200 || status === 201) {
+            toast.success(message as string);
+            router.replace(PAGES.USER.ACCOUNT);
+        }
+    }, [status]);
 
     return (
         <FormContainer headerText={headerText}>

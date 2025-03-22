@@ -10,6 +10,7 @@ import Link from "next/link";
 import FormContainer from "../FormContainer";
 import { PAGES } from "@/constants";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const initialState: TState = {
     message: "",
@@ -26,12 +27,15 @@ const headerText = {
 export default function RegisterPage() {
     const router = useRouter();
     const [state, action, loading] = useActionState(registerAction, initialState);
-    const { error, formData, status } = state;
+    const { error, formData, status, message } = state;
+
     useEffect(() => {
-        if (status === 200) {
+        if (status === 200 || status === 201) {
+            toast.success(message as string);
             router.replace(PAGES.USER.ACCOUNT);
         }
-    }, [])
+    }, [status]);
+
     return (
         <FormContainer headerText={headerText}>
             <form action={action} className="flex flex-col gap-4">
