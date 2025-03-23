@@ -4,7 +4,6 @@ import { CookieConfig, RefreshTokenPayload, SessionPayload, SessionResponse } fr
 import { type Role } from "@prisma/client";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { db } from "./db";
 
 const secretKey = new TextEncoder().encode(config.env.secretKey);
 
@@ -69,6 +68,12 @@ export async function verifySession(): Promise<SessionResponse> {
     };
 }
 
+// export async function refreshSession() {
+//     const session = await verifySession();
+//     if (session.expires.getTime() - Date.now() < 30 * 60 * 1000) {
+//         await createSession(session.userId, session.role);
+//     }
+// }
 
 export async function deleteSession() {
     const cookiesStore = await cookies();
@@ -80,39 +85,12 @@ export async function deleteSession() {
 }
 
 
-export async function refreshSession(refreshToken: string) {
-    try {
-        const { payload } = await jwtVerify(refreshToken, secretKey);
-        const user = await db.user.findUnique({
-            where: { id: payload.userId, refreshToken }
-        });
+export async function refreshSession(session: RefreshTokenPayload) {
+    if (!session.userId) return;
 
-        if (!user) return { success: false, status: 401, message: "Invalid Refresh Token" };
+    const expires = new Date(Date.now() + cookieConfig.duration);
+    const newSession = await encrypt({ userId: session.userId, role: session.role, expires });
 
-        const { accessToken, refreshToken: newRefreshToken } = await generateTokens(user.id, user.role);
-        await db.user.update({
-            where: { id: user.id },
-            data: { refreshToken: newRefreshToken }
-        });
-
-        const cookiesStore = await cookies();
-        cookiesStore.set("accessToken", accessToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            path: "/",
-            maxAge: 15 * 60
-        });
-        cookiesStore.set("refreshToken", newRefreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            path: "/",
-            maxAge: REFRESH_TOKEN_EXPIRY / 1000
-        });
-
-        return { success: true, accessToken };
-    } catch (error) {
-        return { success: false, status: 401, message: "Invalid Refresh Token" };
-    }
+    const cookiesStore = await cookies();
+    cookiesStore.set(cookieConfig.name, newSession, { ...cookieConfig.options, expires });
 }
