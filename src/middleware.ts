@@ -14,6 +14,8 @@ export default async function middleware(req: NextRequest) {
     const response = NextResponse.next({ request: { headers: reqHeader } });
     let session = await decrypt(cookie as string);
     if (session?.userId) {
+        console.log(session.expires)
+        console.log(Number(session.expires) > Date.now())
         await refreshSession(session);
         session = await decrypt(cookie as string);
     }

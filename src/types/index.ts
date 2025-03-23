@@ -40,7 +40,7 @@ export type SessionResponse =
 
 export type SessionPayload = {
     userId: string;
-    expires: Date;
+    expires: Date | number;
     role: Role
 };
 

@@ -39,7 +39,9 @@ export async function encrypt(payload: SessionPayload): Promise<string> {
 
 export async function decrypt(session: string): Promise<RefreshTokenPayload | null> {
     try {
+
         const { payload } = await jwtVerify(session, secretKey, { algorithms: ["HS256"] });
+        if (payload.exp && payload.exp < Date.now() / 1000) return null;
         if (!payload.exp) return null;
         return payload as RefreshTokenPayload;
     } catch (error) {
@@ -108,8 +110,7 @@ export async function deleteSession() {
  * @param session The current session data
  */
 export async function refreshSession(session: RefreshTokenPayload) {
-    if (!session.userId) return;
-
+    if (!session?.userId || Number(session.expires) <= Date.now()) return;
     const expires = new Date(Date.now() + cookieConfig.duration);
     const newSession = await encrypt({ userId: session.userId, role: session.role, expires });
 
