@@ -40,10 +40,10 @@ export type SessionResponse =
 
 export type SessionPayload = {
     userId: string;
+    role: Role;
     expires: Date;
-    role: Role
+    fingerprint: string;
 };
-
 export type RefreshTokenPayload = JWTPayload & SessionPayload;
 
 export interface CookieConfig {
