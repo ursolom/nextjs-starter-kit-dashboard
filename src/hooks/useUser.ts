@@ -14,10 +14,14 @@ export function useUser() {
     });
 
     const refreshUser = async () => {
-        queryClient.invalidateQueries({ queryKey: ["user"] });
+        await queryClient.invalidateQueries({ queryKey: ["user"] });
+    };
+    const logout = async () => {
+        await fetch("/api/logout", { method: "POST" });
+        refreshUser();
     };
 
     const isAdmin = user?.role === "ADMIN";
 
-    return { user, loading: isLoading, message: error ? "User not authorized" : null, isAdmin, refreshUser };
+    return { user, loading: isLoading, message: error ? "User not authorized" : null, isAdmin, refreshUser, logout };
 }
