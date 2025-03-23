@@ -6,6 +6,7 @@ import Header from "@/components/layout/header";
 import { getUser } from "@/lib/user";
 import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
+import AppLayout from "@/components/admin/layout/app-layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,17 +37,12 @@ export default async function RootLayout({
     redirect(PAGES.USER.ACCOUNT);
   }
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Providers>
-          <Header />
-          <div className="pt-24 relative bg-background text-text">
-            {children}
-          </div>
-        </Providers>
-      </body>
-    </html>
+    <AppLayout>
+      <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+          {children}
+        </div>
+      </div>
+    </AppLayout>
   );
 }

@@ -11,8 +11,14 @@ export function redirectMiddleware(urlToRedirect: string, req: NextRequest) {
     return NextResponse.redirect(url);
 }
 
-export async function getUrl() {
-    const url = (await headers()).get("x-url");
-    const admin = url?.includes("/admin");
-    return { url, admin };
+export type UrlData = {
+    url: string;
+    admin: boolean;
+    segments: string[];
+};
+export async function getUrl(): Promise<UrlData> {
+    const url = (await headers()).get("x-url") as string;
+    const segments = url.split("/").filter(Boolean);
+    const admin = segments.includes("admin");
+    return { url, admin, segments };
 }
