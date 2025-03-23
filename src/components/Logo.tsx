@@ -79,4 +79,13 @@ const Logo = () => {
     );
 };
 
-export default Logo;    
+export default Logo;
+export function LogoSvg() {
+    return <svg
+        className="h-full w-full text-emerald-400"
+        viewBox="0 0 32 32"
+        fill="currentColor"
+    >
+        <path d="M16 0L0 16l16 16 16-16L16 0zm0 4.8L27.2 16 16 27.2 4.8 16 16 4.8zM8 16l8 8 8-8-8-8-8 8z" />
+    </svg>
+}

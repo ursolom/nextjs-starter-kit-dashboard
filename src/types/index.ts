@@ -57,3 +57,7 @@ export interface CookieConfig {
     duration: number;
 }
 
+export interface BreadcrumbItem {
+    title: string;
+    href: string;
+}
