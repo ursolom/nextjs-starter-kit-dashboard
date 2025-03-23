@@ -68,11 +68,13 @@ export async function loginAction(prevState: unknown, formData: FormData) {
             formData,
         };
     }
+    const { email } = data;
     try {
-        return {
-            message: "sucesslly",
-            status: 200
-        };
+        const findUser = await db.user.findUnique({
+            where: {
+                email
+            },
+        });
     } catch (error) {
         return {
             message: `error in server please tray again`,
