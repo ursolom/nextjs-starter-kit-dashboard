@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { PAGE_TITLES, PAGES, SITE } from "@/constants";
-import { Providers } from "@/providers";
-import Header from "@/components/layout/header";
 import { getUser } from "@/lib/user";
 import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
@@ -25,9 +23,9 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   const user = await getUser();
 
   if (!user) {
@@ -36,6 +34,7 @@ export default async function RootLayout({
   if (user.role === Role.USER) {
     redirect(PAGES.USER.ACCOUNT);
   }
+
   return (
     <AppLayout>
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">

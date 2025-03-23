@@ -26,16 +26,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { url } = await getUrl();
-  console.log(url)
+  const { admin } = await getUrl();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <Header />
-          <div className="pt-24 relative bg-background text-text">
+          {!admin && <Header />}
+          <div className={!admin ? "pt-24 relative bg-background text-text" : ""}>
             {children}
           </div>
         </Providers>
