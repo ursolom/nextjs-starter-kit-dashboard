@@ -1,3 +1,4 @@
+"use client";
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { NavItem } from './app-sidebar';

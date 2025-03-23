@@ -1,11 +1,12 @@
+"use client";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { BookOpen, Folder, LayoutGrid, LucideIcon } from 'lucide-react';
 import { NavMain } from './nav-main';
 import { NavUser } from './nav-user';
 import { NavFooter } from './nav-footer';
-import React from 'react';
 import { LogoSvg } from '@/components/Logo';
 import Link from 'next/link';
+import { SITE } from '@/constants';
 
 
 export interface NavItem {
@@ -17,8 +18,8 @@ export interface NavItem {
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
+        title: 'admin',
+        href: '/admin',
         icon: LayoutGrid,
     },
 ];
@@ -26,7 +27,7 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        href: SITE.REPO,
         icon: Folder,
     },
     {

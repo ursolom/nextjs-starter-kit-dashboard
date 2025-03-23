@@ -94,6 +94,10 @@ export async function loginAction(prevState: unknown, formData: FormData) {
             return {
                 message: "Incorrect email or password.",
                 status: 401,
+                error: {
+                    email: ["Incorrect email or password."],
+                    password: ["Incorrect email or password."],
+                },
                 formData
             };
         }

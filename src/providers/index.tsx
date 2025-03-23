@@ -9,8 +9,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <QueryClientProvider client={queryClient}>
             <Toaster
-                position="top-center"
-                reverseOrder={true}
+                toastOptions={{
+                    style: {
+                        backgroundColor: "transparent",
+                        color: "#fff",
+                        border: "1px solid #ffffff20",
+                        backdropFilter: "blur(4px)",
+                    },
+                }}
+                position="bottom-right"
             />
             {children}
         </QueryClientProvider>

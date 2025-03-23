@@ -22,6 +22,6 @@ export async function getUrl(): Promise<UrlData> {
     const admin = segments.includes("admin");
     return { url, admin, segments };
 }
-export  function isValidObjectId(id: string): boolean {
+export function isValidObjectId(id: string): boolean {
     return /^[a-fA-F0-9]{24}$/.test(id);
 }

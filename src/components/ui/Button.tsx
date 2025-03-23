@@ -11,8 +11,11 @@ export default function Button({ children, loading = false, ...props }: ButtonPr
         <button
             {...props}
             disabled={loading || props.disabled}
-            className={`w-full flex items-center justify-center gap-2  cursor-pointer hover:bg-card text-white font-semibold py-2 px-4 rounded-md transition-all bg-card/50 border border-border disabled:opacity-50 disabled:cursor-not-allowed ${props.className || ""}`}
-            style={{ minHeight: "40px", minWidth: "140px" }}
+            className={`size-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer 
+                        hover:bg-card text-white font-semibold py-2 px-4 rounded-lg 
+                        transition-all bg-card/50 border border-border 
+                        disabled:opacity-50 disabled:cursor-not-allowed 
+                        ${props.className || ""}`}
         >
             {loading ? <Loading /> : children}
         </button>

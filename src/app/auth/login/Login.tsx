@@ -39,7 +39,7 @@ export default function LoginPage() {
         if (status === 200 || status === 201) {
             router.replace(PAGES.USER.ACCOUNT);
         }
-    }, [status]);
+    }, [status, message]);
 
     return (
         <FormContainer headerText={headerText}>
