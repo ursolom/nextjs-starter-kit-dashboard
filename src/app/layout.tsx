@@ -31,11 +31,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
         <Providers>
           {!admin && <Header />}
-          <div className={!admin ? "pt-24 relative bg-background text-text" : ""}>
+          <div className={!admin ? "pt-24 relative bg-background text-text dark" : "dark"}>
             {children}
           </div>
         </Providers>

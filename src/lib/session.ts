@@ -68,12 +68,6 @@ export async function verifySession(): Promise<SessionResponse> {
     };
 }
 
-// export async function refreshSession() {
-//     const session = await verifySession();
-//     if (session.expires.getTime() - Date.now() < 30 * 60 * 1000) {
-//         await createSession(session.userId, session.role);
-//     }
-// }
 
 export async function deleteSession() {
     const cookiesStore = await cookies();
@@ -82,4 +76,15 @@ export async function deleteSession() {
         status: 200,
         message: "log out successfully"
     };
+}
+
+
+export async function refreshSession(session: RefreshTokenPayload) {
+    if (!session.userId) return;
+
+    const expires = new Date(Date.now() + cookieConfig.duration);
+    const newSession = await encrypt({ userId: session.userId, role: session.role, expires });
+
+    const cookiesStore = await cookies();
+    cookiesStore.set(cookieConfig.name, newSession, { ...cookieConfig.options, expires });
 }

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { LOGGED_OUT_ROUTES, PAGES, PUBLIC_ROUTES } from "./constants";
 import { cookies } from "next/headers";
-import { decrypt } from "./lib/session";
+import { decrypt, refreshSession } from "./lib/session";
 import { redirectMiddleware } from "./helpers";
 import { Role } from "@prisma/client";
 
@@ -12,10 +12,17 @@ export default async function middleware(req: NextRequest) {
     const reqHeader = new Headers(req.headers);
     reqHeader.set("x-url", req.url);
     const response = NextResponse.next({ request: { headers: reqHeader } });
-    const session = await decrypt(cookie as string);
+    let session = await decrypt(cookie as string);
+    if (session?.userId) {
+        await refreshSession(session);
+        session = await decrypt(cookie as string);
+    }
+
+    // ---------------------------pages
     const isAdminRoute = pathname.startsWith(PAGES.ADMIN.DASHBOARD);
     const protectedPages = ["account", "admin"];
     const isProtectedPage = protectedPages.some(page => pathname.startsWith(`/${page}`));
+    // ---------------------------
 
     // Redirect authenticated users from logged-out routes
     if (session?.userId && LOGGED_OUT_ROUTES.includes(pathname)) {
