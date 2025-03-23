@@ -1,8 +1,6 @@
 "use client";
 
 import { loginAction } from "@/actions/auth";
-import Button from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { TState } from "@/types";
 import { useActionState, useEffect } from "react";
 import { LoginInputs } from "../inputs";
@@ -11,6 +9,8 @@ import FormContainer from "../FormContainer";
 import { PAGES } from "@/constants";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 const initialState: TState = {
     message: "",
@@ -30,8 +30,13 @@ export default function LoginPage() {
     const { error, formData, status, message } = state;
 
     useEffect(() => {
+        if (status && message) {
+            if (status === 200 || status === 201) {
+                toast.success(message as string);
+            }
+            toast.error(message as string);
+        }
         if (status === 200 || status === 201) {
-            toast.success(message as string);
             router.replace(PAGES.USER.ACCOUNT);
         }
     }, [status]);

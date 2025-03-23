@@ -75,8 +75,8 @@ export async function loginAction(prevState: unknown, formData: FormData) {
     try {
         const user = await db.user.findUnique({
             where: {
-                email: email,
-                role: Role.USER
+                email: email
+                // role: Role.USER
             }
         });
 
