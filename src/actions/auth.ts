@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { createSession } from "@/lib/session";
 import { handleServerError } from "@/types/handleServerError";
 import { loginSchema, registerSchema } from "@/validation/authValidation";
+import { Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 
@@ -61,6 +62,7 @@ export async function registerAction(prevState: unknown, formData: FormData) {
 export async function loginAction(prevState: unknown, formData: FormData) {
     const validation = loginSchema.safeParse(formatForm(formData))
     const { data, error, success } = validation;
+
     if (!success) {
         return {
             status: 400,
@@ -68,18 +70,48 @@ export async function loginAction(prevState: unknown, formData: FormData) {
             formData,
         };
     }
+
     const { email } = data;
     try {
-        const findUser = await db.user.findUnique({
+        const user = await db.user.findUnique({
             where: {
-                email
-            },
+                email: email,
+                role: Role.USER
+            }
         });
+
+        if (!user) {
+            return {
+                message: "No account found with this email. Please create a new account.",
+                status: 404,
+                formData,
+            };
+        }
+
+        // Validate password
+        const isValidPassword = await bcrypt.compare(data.password, user.password);
+        if (!isValidPassword) {
+            return {
+                message: "Incorrect email or password.",
+                status: 401,
+                formData
+            };
+        }
+
+        const { password, ...userWithoutPassword } = user;
+
+        // Create session
+        await createSession(user.id, user.role);
+
+        return {
+            data: userWithoutPassword,
+            message: "Successfully logged in!",
+            status: 200,
+        };
     } catch (error) {
         return {
-            message: `error in server please tray again`,
+            message: "Server error. Please try again later.",
             status: 500,
-        }
+        };
     }
 }
-
