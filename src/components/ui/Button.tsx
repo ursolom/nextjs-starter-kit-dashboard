@@ -12,7 +12,7 @@ export default function Button({ children, loading = false, ...props }: ButtonPr
             {...props}
             disabled={loading || props.disabled}
             className={`size-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer 
-                        hover:bg-card text-white font-semibold py-2 px-4 rounded-lg 
+                        hover:bg-card text-white font-semibold py-2 px-3 rounded-lg 
                         transition-all bg-card/50 border border-border 
                         disabled:opacity-50 disabled:cursor-not-allowed 
                         ${props.className || ""}`}

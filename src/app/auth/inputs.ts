@@ -39,3 +39,4 @@ export const LoginInputs = [
         type: "password",
     },
 ];
+
