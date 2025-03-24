@@ -82,7 +82,7 @@ export async function loginAction(prevState: unknown, formData: FormData) {
 
         if (!user) {
             return {
-                message: "No account found with this email. Please create a new account.",
+                message: "These credentials do not match our records.",
                 status: 404,
                 formData,
             };
@@ -92,12 +92,8 @@ export async function loginAction(prevState: unknown, formData: FormData) {
         const isValidPassword = await bcrypt.compare(data.password, user.password);
         if (!isValidPassword) {
             return {
-                message: "Incorrect email or password.",
+                message: "These credentials do not match our records.",
                 status: 401,
-                error: {
-                    email: ["Incorrect email or password."],
-                    password: ["Incorrect email or password."],
-                },
                 formData
             };
         }
