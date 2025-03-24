@@ -11,7 +11,6 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { MdError } from "react-icons/md";
 import Alert from "@/components/ui/Alert";
 
 const initialState: TState = {
@@ -26,10 +25,10 @@ const headerText = {
     subTitle: "Enter your email and password below to log in"
 };
 
-const isSuccessStatus = (status: TState['status']): status is 200 | 201 =>
+const isSuccessStatus = (status: TState['status']) =>
     status === 200 || status === 201;
 
-const isErrorStatus = (status: TState['status']): status is 401 | 404 =>
+const isErrorStatus = (status: TState['status']) =>
     status === 401 || status === 404;
 
 export default function LoginPage() {
