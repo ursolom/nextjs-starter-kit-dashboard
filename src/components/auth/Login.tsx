@@ -75,16 +75,18 @@ export default function LoginPage({ title, subTitle, admin }: TProps) {
                 ))}
 
                 <Button loading={loading}>Log in</Button>
+                {!admin &&
+                    <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
+                        Don't have an account?{" "}
+                        <Link
+                            href={PAGES.PUBLIC.AUTH.REGISTER}
+                            className="text-primary font-medium hover:underline"
+                        >
+                            Register Now
+                        </Link>
+                    </p>
 
-                <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
-                    Don't have an account?{" "}
-                    <Link
-                        href={PAGES.PUBLIC.AUTH.REGISTER}
-                        className="text-primary font-medium hover:underline"
-                    >
-                        Register Now
-                    </Link>
-                </p>
+                }
             </form>
         </FormContainer>
     );

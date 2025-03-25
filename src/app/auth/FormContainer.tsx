@@ -17,11 +17,11 @@ export default function FormContainer({ headerText, children }: Props) {
             </div>
 
             {/* Auth Card */}
-            <div className="w-full max-w-md bg-card/60 border border-border shadow-xl rounded-lg p-8 relative z-10">
+            <div className="w-full sm:max-w-md bg-card/60 border border-border shadow-xl rounded-lg py-14 sm:px-7 px-3 relative z-10">
                 <h2 className="text-3xl font-bold text-center text-text mb-2">
                     {headerText.title}
                 </h2>
-                <p className="text-center text-text/70 mb-6">
+                <p className="text-center  text-text/70 mb-6">
                     {headerText.subTitle}
                 </p>
                 {children}

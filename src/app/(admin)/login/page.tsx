@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function LoginAdmin() {
-    return <LoginPage title="Log in to your account" subTitle="Enter your email and password below to log in" admin={false} />;
+    return <LoginPage title="Log in to your account" subTitle="Enter your email and password below to log in" admin={true} />;
 }
