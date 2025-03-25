@@ -3,9 +3,9 @@
 import { loginAction } from "@/actions/auth";
 import { TState } from "@/types";
 import { useActionState, useEffect } from "react";
-import { LoginInputs } from "../inputs";
+import { LoginInputs } from "../../app/auth/inputs";
 import Link from "next/link";
-import FormContainer from "../FormContainer";
+import FormContainer from "../../app/auth/FormContainer";
 import { PAGES } from "@/constants";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -20,19 +20,27 @@ const initialState: TState = {
     formData: null,
 };
 
-const headerText = {
-    title: "Log in to your account",
-    subTitle: "Enter your email and password below to log in"
-};
 
 const isSuccessStatus = (status: TState['status']) =>
     status === 200 || status === 201;
 
 const isErrorStatus = (status: TState['status']) =>
     status === 401 || status === 404;
+type TProps = {
+    title: string,
+    subTitle: string,
+    admin: boolean
+}
+export default function LoginPage({ title, subTitle, admin }: TProps) {
+    const [state, action, loading] = useActionState(
+        (prevState: unknown, formData: FormData) => loginAction(prevState, formData, admin),
+        initialState
+    );
+    const headerText = {
+        title: title,
+        subTitle: subTitle
+    };
 
-export default function LoginPage() {
-    const [state, action, loading] = useActionState(loginAction, initialState);
     const router = useRouter();
     const { error, formData, status, message } = state;
 

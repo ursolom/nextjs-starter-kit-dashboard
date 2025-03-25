@@ -33,7 +33,12 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
-        <Providers>
+        <Providers
+          attribute="class"
+          defaultTheme="da"
+          enableSystem
+          disableTransitionOnChange
+        >
           {!admin && <Header />}
           <div className={!admin ? "pt-24 relative bg-background text-text dark" : "dark"}>
             {children}

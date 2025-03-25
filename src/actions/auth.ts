@@ -59,7 +59,7 @@ export async function registerAction(prevState: unknown, formData: FormData) {
 
 //-------------------->  login user  <--------------------------
 
-export async function loginAction(prevState: unknown, formData: FormData) {
+export async function loginAction(prevState: unknown, formData: FormData, admin: boolean) {
     const validation = loginSchema.safeParse(formatForm(formData))
     const { data, error, success } = validation;
 
@@ -75,8 +75,8 @@ export async function loginAction(prevState: unknown, formData: FormData) {
     try {
         const user = await db.user.findUnique({
             where: {
-                email: email
-                // role: Role.USER
+                email: email,
+                role: admin === true ? Role.ADMIN : Role.USER
             }
         });
 

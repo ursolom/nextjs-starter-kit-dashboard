@@ -25,7 +25,8 @@ export const PAGE_TITLES = {
     CONTACT: `${SITE.NAME} - Contact`,
     LOGIN: `${SITE.NAME} - Login`,
     REGISTER: `${SITE.NAME} - Register`,
-    DASHBOARD: `${SITE.NAME} - Dashboard`,
+    DASHBOARD: `${SITE.NAME} - Admin`,
+    LOGIN_ADMIN: `${SITE.NAME} - Login Admin `,
 };
 
 export const PAGES = {

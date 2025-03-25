@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import LoginPage from "./Login";
+import LoginPage from "../../../components/auth/Login";
 import { PAGE_TITLES, SITE } from "@/constants";
 
 export const metadata: Metadata = {
@@ -7,6 +7,6 @@ export const metadata: Metadata = {
     description: SITE.DESCRIPTION,
 };
 
-export default function Login() {
-    return <LoginPage />;
+export default function LoginUser() {
+    return <LoginPage title="Log in to your account" subTitle="Enter your email and password below to log in" admin={false} />;
 }
