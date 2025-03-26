@@ -12,10 +12,15 @@ export type AppLayoutProps = {
 
 export default async function AppLayout({ children }: AppLayoutProps) {
     const { segments }: UrlData = await getUrl();
-    const breadcrumbs: BreadcrumbItem[] = segments.map((segment, index) => ({
+
+    const filteredSegments = segments.slice(2);
+
+    const breadcrumbs: BreadcrumbItem[] = filteredSegments.map((segment, index) => ({
         title: segment.charAt(0).toUpperCase() + segment.slice(1),
-        href: "/" + segments.slice(0, index + 1).join("/"),
+        href: "/" + filteredSegments.slice(0, index + 1).join("/"),
     }));
+    console.log("breadcrumbs==============", breadcrumbs);
+    console.log("segments==============", segments);
 
     return (
         <AppSidebarLayout breadcrumbs={breadcrumbs}>

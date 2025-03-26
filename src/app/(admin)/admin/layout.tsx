@@ -37,9 +37,11 @@ export default async function RootLayout({
 
   return (
     <AppLayout>
-      <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 z-10">
+      <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 -z-10">
         <div className="size-full absolute top-0 left-0 -z-10 bg-[radial-gradient(#d5c8ed42,transparent)]"></div>
-        {children}
+        <div className="relative z-10">
+          {children}
+        </div>
       </div>
     </AppLayout>
   );
